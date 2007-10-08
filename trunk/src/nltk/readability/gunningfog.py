@@ -1,7 +1,7 @@
 import nltk
-import nltk.tokenize
+from nltk import *
 
-class gunninfog:
+class gunningfog:
     
     __text = ""
     
@@ -12,13 +12,24 @@ class gunninfog:
         self.__text = text
         
     def calc(self):
-        if len(self.text) == 0:
+        if len(self.__text) == 0:
             print 'No text set'
-            
-        words = []
-        sentences = []
+            return
+        else:
+            text = self.__text
+        
+        tokenizer = RegexpTokenizer('\w+|\$[\d\.]+|\S+')
+        words = tokenizer.tokenize(text)
+        
+        tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
+        sentences = tokenizer.tokenize(text)
+        
         complex_words = []
         
+        print str(len(words)) + ' ' + str(len(sentences))
+        print words
         
-    
+        
+g = gunningfog("lala lala.\ntra lala la jiha.\nlala laaaaaaa.")
+g.calc()
     
