@@ -1,5 +1,7 @@
 import string, re
 
+
+
 ###
 ### Fallback syllable counter
 ###
@@ -7,7 +9,7 @@ import string, re
 ### Lingua::EN::Syllable.
 ###
 
-syllable_path = "../dict/syllables"
+syllable_path = "files/syllables"
 
 fallback_cache = {}
 
