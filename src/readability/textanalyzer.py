@@ -34,3 +34,33 @@ class textanalyzer(object):
         return syllableCount
     countSyllables = classmethod(countSyllables)
     
+    
+    #This method must be enhanced. At the moment it only
+    #considers the number of syllables in a word.
+    #This often results in that too many complex words are detected.
+    def countComplexWords(self, text=''):
+        words = self.getWords(text)
+        complexWords = 0
+        #Just for manual checking and debugging.
+        cWords = []
+        
+        for word in words:
+            if self.countSyllables(word)>= 3:
+                complexWords = complexWords + 1
+                cWords.append(word)
+                print word
+        
+        return complexWords
+    countComplexWords = classmethod(countComplexWords)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
