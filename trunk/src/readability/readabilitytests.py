@@ -1,16 +1,34 @@
 from textanalyzer import *
 
 def ARI(text=''):
-    value = 0
+    score = 0.0
     words = textanalyzer.getWords(text)
     sentences = textanalyzer.getSentences(text)
-    totalchars = 0
+    totalChars = 0.0
     
     for word in words:
-        totalchars += len(word)
+        totalChars += len(word)
     
-    print 'Words: ' + str(len(words)) + " Sentences: " + str(len(sentences))
-    print 'Chars: ' + str(totalchars)
+    totalWords = float(len(words))
+    totalSentences = float(len(sentences))
     
-    value = 4.71 * (totalchars / len(words)) + 0.5 * (len(words) / len(sentences)) - 21.43
-    return value
+    
+    print "Words: \t\t" + str(len(words))
+    print "Sentences: \t" + str(len(sentences))
+    print "Chars: \t\t" + str(totalChars)
+    print "syllables: \t" + str(textanalyzer.countSyllables(words))
+    
+    score = 4.71 * (totalChars / totalWords) + 0.5 * (totalWords / totalSentences) - 21.43
+    return score
+
+def FleschReadingEase(text=''):
+    score = 0.0
+    words = textanalyzer.getWords(text)
+    sentences = textanalyzer.getSentences(text)
+    
+    totalWords = float(len(words))
+    totalSentences = float(len(sentences))
+    totalSyllables = float(textanalyzer.countSyllables(words))
+    
+    score = 206.835 - 1.015 * (totalWords / totalSentences) - 84.6 * (totalSyllables / totalWords)
+    return score
