@@ -1,4 +1,5 @@
 import nltk.data
+import syllables
 from nltk.tokenize import *
 
 class textanalyzer(object):
@@ -24,4 +25,12 @@ class textanalyzer(object):
         sentences = tokenizer.tokenize(text)
         return sentences
     getSentences = classmethod(getSentences)
+    
+    def countSyllables(selfself, words = []):
+        syllableCount = 0
+        for word in words:
+            syllableCount += syllables.count_word_fallback(word)
+            
+        return syllableCount
+    countSyllables = classmethod(countSyllables)
     
