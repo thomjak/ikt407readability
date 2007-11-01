@@ -26,7 +26,7 @@ class textanalyzer(object):
         return sentences
     getSentences = classmethod(getSentences)
     
-    def countSyllables(selfself, words = []):
+    def countSyllables(self, words = []):
         syllableCount = 0
         for word in words:
             syllableCount += syllables.count_word_fallback(word)
@@ -40,16 +40,35 @@ class textanalyzer(object):
     #This often results in that too many complex words are detected.
     def countComplexWords(self, text=''):
         words = self.getWords(text)
+        sentences = len(self.getSentences(text));
+        sentencesList = self.getSentences(text);
         complexWords = 0
+        found = False;
         #Just for manual checking and debugging.
         cWords = []
+        curWord = []
         
-        for word in words:
-            if self.countSyllables(word)>= 3:
-                complexWords = complexWords + 1
-                cWords.append(word)
-                print word
-        
+        for word in words:          
+            curWord.append(word)
+            if self.countSyllables(curWord)>= 3:
+                
+                #Checking proper nouns. If a word starts with a capital letter
+                #and is NOT  at the beginning of a sentence we don't add it
+                #as a complex word.
+                if not(word[0].isupper()):
+                    complexWords += 1
+                    #cWords.append(word)
+                else:
+                    for sentence in sentencesList:
+                        if str(sentence).startswith(word):
+                            found = True
+                            break
+                    
+                    if found: 
+                        complexWords+=1
+                        found = False
+                    
+            curWord.remove(word)
         return complexWords
     countComplexWords = classmethod(countComplexWords)
         

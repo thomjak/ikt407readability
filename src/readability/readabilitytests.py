@@ -30,7 +30,7 @@ def FleschReadingEase(text=''):
     totalSentences = float(len(sentences))
     totalSyllables = float(textanalyzer.countSyllables(words))
     
-    score = 206.835 - 1.015 * (totalWords / totalSentences) - 84.6 * (totalSyllables / totalWords)
+    score = 206.835 - 1.015 * (totalWords / totalSentences) - 84.6 * (totalSyllables/ totalWords)
     return score
 
 def FleschKincaidGradeLevel(text=''):
@@ -45,6 +45,18 @@ def FleschKincaidGradeLevel(text=''):
     score = 0.39 * (totalWords / totalSentences) + 11.8 * (totalSyllables/totalWords) - 15.59
     return score
 
+def GunningFogIndex(text=''):
+    score = 0.0
+    words = textanalyzer.getWords(text)
+    sentences = textanalyzer.getSentences(text)
+    
+    totalWords = float(len(words))
+    totalSentences = float(len(sentences))
+    avgSentenceLength = float(totalWords/totalSentences)
+    totalSyllables = float(textanalyzer.countSyllables(words))
+    totalComplexWords = float(textanalyzer.countComplexWords(text))
+    score = 0.4 * ((avgSentenceLength) + (100 * (totalComplexWords/totalWords)))
+    return score
     
     
     
