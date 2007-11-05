@@ -16,16 +16,17 @@ import readabilitytests
 #on Toon Disney.
 #"""
 
-text = """
-The wizarding world in which Harry finds himself is both completely separate from and yet intimately connected to our own world. While the fantasy world of Narnia is an alternative universe and the Lord of the Rings’ Middle-earth a mythic past, the wizarding world of Harry Potter exists alongside ours and contains magical elements analogous to things in the non-magical world. Many of its institutions and locations are in towns and cities, including London for example, that are recognisable in the real world. It possesses a fragmented collection of hidden streets, overlooked and ancient pubs, lonely country manors and secluded castles that remain invisible to the non-magical population (known as "Muggles"; e.g., The Dursleys). Wizard ability is inborn, rather than learned, although one must attend schools such as Hogwarts in order to master and control it. However it is possible for wizard parents to have children who are born with little or no magical ability at all (known as "Squibs"; e.g., Mrs. Figg, Argus Filch). Since one is either born a wizard or not, most wizards are unfamiliar with the Muggle world, which appears stranger to them than their world does to us. The magical world and its many fantastic elements are depicted in a matter-of-fact way. This juxtaposition of the magical and the mundane is one of the principal motifs in the novels; the characters in the stories live normal lives with normal problems, for all their magical surroundings.
+text = """Four score and seven years ago, our fathers brought forth upon this continent a new nation: conceived in liberty, and dedicated to the proposition that all men are created equal.
+
+Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battlefield of that war.
+
+We have come to dedicate a portion of that field as a final resting place for those who here gave their lives that this nation might live. It is altogether fitting and proper that we should do this.
+
+But, in a larger sense, we cannot dedicate, we cannot consecrate, we cannot hallow this ground. The brave men, living and dead, who struggled here have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember, what we say here, but it can never forget what they did here.
+
+It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us, that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion, that we here highly resolve that these dead shall not have died in vain, that this nation, under God, shall have a new birth of freedom, and that government of the people, by the people, for the people, shall not perish from this earth.
 """
 
-words = textanalyzer.getWords(text)
-print "Words: " + str(words)
-print "Sentences: " + str(textanalyzer.getSentences(text))
-print "Syllables: " + str(textanalyzer.countSyllables(text))
-print "Complex words: " + str(textanalyzer.countComplexWords(text))
-print "/\\" * 50
-
-readabilitytests.getReportAll(text)
+textanalyzer.analyzeText(text)
+readabilitytests.CalculateAllTests(text)
                                   

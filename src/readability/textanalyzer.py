@@ -10,6 +10,26 @@ class textanalyzer(object):
     def __init__(self):
         pass
 
+    def analyzeText(self, text=''):
+        
+        words = self.getWords(text)
+        charCount = self.getCharacterCount(words)
+        wordCount = len(words)
+        sentenceCount = len(self.getSentences(text))
+        syllablesCount = self.countSyllables(words)
+        complexwordsCount = self.countComplexWords(text)
+        averageWordsPerSentence = wordCount/sentenceCount
+        
+        print '*' * 70
+        print ' Number of characters: ' + str(charCount)
+        print ' Number of words: ' + str(wordCount)
+        print ' Number of sentences: ' + str(sentenceCount)
+        print ' Number of syllables: ' + str(syllablesCount)
+        print ' Number of complex words: ' + str(complexwordsCount)
+        print ' Average words per sentence: ' + str(averageWordsPerSentence)
+        print '*' * 70
+    analyzeText = classmethod(analyzeText)  
+        
 
     def getCharacterCount(self, words):
         characters = 0
