@@ -10,6 +10,14 @@ class textanalyzer(object):
     def __init__(self):
         pass
 
+
+    def getCharacterCount(self, words):
+        characters = 0
+        for word in words:
+            characters += len(word)
+        return characters
+    getCharacterCount = classmethod(getCharacterCount)    
+        
     def getWords(self, text=''):
         words = []
         words = self.tokenizer.tokenize(text)

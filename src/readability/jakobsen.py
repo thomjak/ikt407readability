@@ -27,9 +27,5 @@ print "Syllables: " + str(textanalyzer.countSyllables(text))
 print "Complex words: " + str(textanalyzer.countComplexWords(text))
 print "/\\" * 50
 
-print "Flesch Reading Ease: " + str(readabilitytests.FleschReadingEase(text))
-
-print "Flesch-Kincaid Grade Level: " + str(readabilitytests.FleschKincaidGradeLevel(text))
-
-print "Gunning fog index: " + str(readabilitytests.GunningFogIndex(text))
+readabilitytests.getReportAll(text)
                                   
