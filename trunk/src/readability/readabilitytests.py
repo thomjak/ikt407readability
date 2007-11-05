@@ -1,76 +1,66 @@
 from textanalyzer import *
 import math
 
-def ARI(text=''):
-    score = 0.0
+analyzedVariables = {}
+
+def getTextVariables(text = ''):
     words = textanalyzer.getWords(text)
-    sentences = textanalyzer.getSentences(text)
+    charCount = textanalyzer.getCharacterCount(words)
+    wordCount = len(words)
+    sentenceCount = len(textanalyzer.getSentences(text))
+    syllableCount = textanalyzer.countSyllables(words)
+    complexwordsCount = textanalyzer.countComplexWords(text)
+    averageWordsPerSentence = wordCount/sentenceCount
     
-    totalChars = textanalyzer.getCharacterCount(words)
-    totalWords = float(len(words))
-    totalSentences = float(len(sentences))
+    analyzedVariables['charCount'] = float(charCount)
+    analyzedVariables['wordCount'] = float(wordCount)
+    analyzedVariables['sentenceCount'] = float(sentenceCount)
+    analyzedVariables['syllableCount'] = float(syllableCount)
+    analyzedVariables['complexwordCount'] = float(complexwordsCount)
+    analyzedVariables['averageWordsPerSentence'] = float(averageWordsPerSentence)
     
-    score = 4.71 * (totalChars / totalWords) + 0.5 * (totalWords / totalSentences) - 21.43
-    return score
+def CalculateAllTests(text = ''):
+    getTextVariables(text)
+    getReportAll()
+ 
 
-def FleschReadingEase(text=''):
+def ARI():
     score = 0.0
-    words = textanalyzer.getWords(text)
-    sentences = textanalyzer.getSentences(text)
     
-    totalWords = float(len(words))
-    totalSentences = float(len(sentences))
-    totalSyllables = float(textanalyzer.countSyllables(words))
-    
-    score = 206.835 - 1.015 * (totalWords / totalSentences) - 84.6 * (totalSyllables/ totalWords)
+    score = 4.71 * (analyzedVariables['charCount'] / analyzedVariables['wordCount']) + 0.5 * (analyzedVariables['wordCount'] / analyzedVariables['sentenceCount']) - 21.43
     return score
 
-def FleschKincaidGradeLevel(text=''):
+def FleschReadingEase():
     score = 0.0
-    words = textanalyzer.getWords(text)
-    sentences = textanalyzer.getSentences(text)
     
-    totalWords = float(len(words))
-    totalSentences = float(len(sentences))
-    totalSyllables = float(textanalyzer.countSyllables(words))
-    
-    score = 0.39 * (totalWords / totalSentences) + 11.8 * (totalSyllables/totalWords) - 15.59
+    score = 206.835 - (1.015 * (analyzedVariables['averageWordsPerSentence'])) - (84.6 * (analyzedVariables['syllableCount']/ analyzedVariables['wordCount']))
     return score
 
-def GunningFogIndex(text=''):
+def FleschKincaidGradeLevel():
     score = 0.0
-    words = textanalyzer.getWords(text)
-    sentences = textanalyzer.getSentences(text)
-    
-    totalWords = float(len(words))
-    totalSentences = float(len(sentences))
-    avgSentenceLength = float(totalWords/totalSentences)
-    totalSyllables = float(textanalyzer.countSyllables(words))
-    totalComplexWords = float(textanalyzer.countComplexWords(text))
-    score = 0.4 * ((avgSentenceLength) + (100 * (totalComplexWords/totalWords)))
+
+    score = 0.39 * (analyzedVariables['averageWordsPerSentence']) + 11.8 * (analyzedVariables['syllableCount']/ analyzedVariables['wordCount']) - 15.59
     return score
 
-def SMOGIndex(text=''):
+def GunningFogIndex():
     score = 0.0
-    sentences = textanalyzer.getSentences(text)
-    totalSentences = float(len(sentences))
-    totalComplexWords = float(textanalyzer.countComplexWords(text))
-    
-    score = (math.sqrt(totalComplexWords*(30/totalSentences)) + 3)
+   
+    score = 0.4 * ((analyzedVariables['averageWordsPerSentence']) + (100 * (analyzedVariables['complexwordCount']/analyzedVariables['wordCount'])))
     return score
 
-def ColemanLiauIndex(text=''):
+def SMOGIndex():
     score = 0.0
-    words = textanalyzer.getWords(text)
-    sentences = textanalyzer.getSentences(text)
-    totalChars = textanalyzer.getCharacterCount(words)
-    totalWords = float(len(words))
-    totalSentences = float(len(sentences))
     
-    score = (5.89*(totalChars/totalWords))-(30*(totalSentences/totalWords))-15.8
+    score = (math.sqrt(analyzedVariables['complexwordCount']*(30/analyzedVariables['sentenceCount'])) + 3)
     return score
 
-def getReportAll(text=''):
+def ColemanLiauIndex():
+    score = 0.0
+    
+    score = (5.89*(analyzedVariables['charCount']/analyzedVariables['wordCount']))-(30*(analyzedVariables['sentenceCount']/analyzedVariables['wordCount']))-15.8
+    return score
+
+def getReportAll():
     ari = 0.0
     fleschEase = 0.0
     fleschGrade = 0.0
@@ -78,12 +68,12 @@ def getReportAll(text=''):
     smog = 0.0
     coleman = 0.0
     
-    ari = ARI(text)
-    fleschEase = FleschReadingEase(text)
-    fleschGrade = FleschKincaidGradeLevel(text)
-    gunningFog = GunningFogIndex(text)
-    smog = SMOGIndex(text)
-    coleman = ColemanLiauIndex(text)
+    ari = ARI()
+    fleschEase = FleschReadingEase()
+    fleschGrade = FleschKincaidGradeLevel()
+    gunningFog = GunningFogIndex()
+    smog = SMOGIndex()
+    coleman = ColemanLiauIndex()
     
     print '*' * 70
     print ' ARI: ' + str(ari)
