@@ -1,21 +1,23 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+# Sets the encoding to utf-8 to avoid problems with æøå
+
 import nltk
 from textanalyzer import *
-
+from languageclassifier import *
 import readabilitytests
+from urlextracter import *
+from textanalyzer import *
 
-#text = ("Good muffins cost $3.88\nin New York.  Please buy me\ntwo of them.\n\nThanks.")
-text = """
-This is an interactive web page for checking a sample of writing.
-It is modeled after the ancient Unix utilities style and diction.
-Enter or copy text into the first box below. The scores to the 
-right give the readability of the text according to various formulas.
-"""
-words = textanalyzer.getWords(text)
-print "words: " + str(words)
-print "sentences: " + str(textanalyzer.getSentences(text))
-print "=" * 100
 
-print "ARI: " + str(readabilitytests.ARI(text))
-
-print "Flesch Reading Ease : " + str(readabilitytests.FleschReadingEase(text))
-print "Flesch Reading Grade : " + str(readabilitytests.FleschReadingGrade(text))
+print "Using URL as input"
+print "*" * 40
+ue = URLextracter("http://www.openbsd.org/cgi-bin/man.cgi?query=ssh")
+print "Number of links: %s" % len(ue.linklist)
+text = ue.output()
+nb = NaiveBayes()
+nb.train("/home/thomas/mined2")
+nb.testAccuracy(nb.test_files)
+print "Lang: %s" % nb.classifyText(text)
+textanalyzer.analyzeText(text)
+readabilitytests.CalculateAllTests(text)
