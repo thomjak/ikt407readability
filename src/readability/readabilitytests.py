@@ -76,12 +76,12 @@ def getReportAll():
     coleman = ColemanLiauIndex()
     
     print '*' * 70
-    print ' ARI: %.2f' % ari
-    print ' Flesch Reading Ease: %.2f' % fleschEase
-    print ' FleschKincaid Grade Level: %.2f' % fleschGrade
-    print ' Gunning Fog: %.2f' % gunningFog
-    print ' SMOG Index: %.2f' % smog
-    print ' Coleman-Liau Index: %.2f' % coleman
+    print ' ARI: %.1f' % ari
+    print ' Flesch Reading Ease: %.1f' % fleschEase
+    print ' FleschKincaid Grade Level: %.1f' % fleschGrade
+    print ' Gunning Fog: %.1f' % gunningFog
+    print ' SMOG Index: %.1f' % smog
+    print ' Coleman-Liau Index: %.1f' % coleman
     print '*' * 70
  
  
