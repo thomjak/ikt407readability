@@ -1,13 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*- 
 # Sets the encoding to utf-8 to avoid problems with æøå
-from nltk.corpus import stopwords
-
 import glob
 import re
 import random
 import math
 import pickle
+import os
+
+from nltk.corpus import stopwords
 
 from urlextracter import URLextracter
 from sgmllib import *
@@ -18,6 +19,7 @@ class NaiveBayes():
     
     training_files = []
     test_files = []
+    candidate_languages = []
 
     def __init__(self):
         self.nor_stopwords = {}
@@ -34,13 +36,21 @@ class NaiveBayes():
     def load(self,picklepath):
         try:
             p = open(picklepath, 'r')
-            self.p_word_given_lang = pickle.load(p)
+            data = pickle.load(p)
+            self.p_word_given_lang = data["p_word_given_lang"]
+            self.candidate_languages = data["canidate_languages"]
+            self.p_lang = data["p_lang"]
+            self.vocabulary = data["vocabulary"]
         except IOError:
             self.p_word_given_lang = {}
             print "Nothing to load here!"
         
         
-        
+    """
+    Train the classifier with data placed 
+    in a folder named as the related language.
+    Example: /path/to/files/eng/file01.txt
+    """    
     def train(self, path):
         # Setup
         data_files = glob.glob(path + "/*/*")
@@ -92,11 +102,24 @@ class NaiveBayes():
                 
         print "Training finished...(training-set of size %d)" % len(self.training_files)
         self.p_word_given_lang = p_word_given_lang
+        self.candidate_languages = self.files.keys()
+        
         # Save result as a file
         output = open("/home/thomas/test.pickle",'w')
-        pickler = pickle.dump(p_word_given_lang, output, -1)
+        data = {}
+        data["p_word_given_lang"] = p_word_given_lang
+        data["canidate_languages"] = self.files.keys()
+        data["p_lang"] = self.p_lang
+        data["vocabulary"] = self.vocabulary
+        pickler = pickle.dump(data, output, -1)
         output.close()   
-        
+    
+    """
+    Filter out the words we're not interessted in
+    and return a dictionary with all remaining words
+    sorted by language.
+    Example: vocabulary[eng] = {'lazy','fox',...}
+    """
     def __createVocabulary(self, files):
         # Count number of occurance of each word
         word_count = {}
@@ -118,7 +141,21 @@ class NaiveBayes():
                         vocabulary['eng'][word] = True
         return vocabulary
     
-    def testAccuracy(self,test_files):
+    def testAccuracy(self,test_files = ""):
+        
+        if test_files == "":
+            print "No test files given"
+            return
+        elif os.path.isdir(str(test_files)):
+            print "path"
+            self.test_files = glob.glob(test_files + "/*/*")
+        else:
+            self.test_files = test_files
+            print "dict"
+            
+            
+            
+        
         errors = 0.0
         total = 0.0
         
@@ -138,7 +175,7 @@ class NaiveBayes():
             # Finds group with max P(O | H) * P(H)
             max_lang = 0
             max_p = 1
-            for candidate_lang in self.files.keys():
+            for candidate_lang in self.candidate_languages:
                 # Calculates P(O | H) * P(H) for candidate group
                 p = math.log(self.p_lang[candidate_lang])
                 for word in file_to_be_classified:
@@ -160,7 +197,7 @@ class NaiveBayes():
     def classifyText(self, text):
         max_lang = 0
         max_p = 1
-        for candidate_lang in self.files.keys():
+        for candidate_lang in self.candidate_languages:
             # Calculates P(O | H) * P(H) for candidate group
             p = math.log(self.p_lang[candidate_lang])
             for word in text.split(' '):
@@ -187,28 +224,34 @@ class NaiveBayes():
     def report_unbalanced(self,tag):
         pass
     
-if __name__=="__main__":
-    import os
-    os.system("clear")
-    print "Demo of languageclassifier.py"
-    print "=" * 40
-    nb = NaiveBayes()
-    nb.train("/home/thomas/mined2/")
-    nb.testAccuracy(nb.test_files)
-    print "\n"
+    def demo(self):
+        print "Demo of language classifier"
+        print "=" * 40
+        nb = NaiveBayes()
+        #nb.train("/home/thomas/mined2/")
+        nb.load("/home/thomas/test.pickle")
+        nb.testAccuracy("/home/thomas/mined2")
+        print "\n"
+        
+        lang = nb.classifyURL("http://harvardscience.harvard.edu/")
+        print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://vg.no")
+        print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://itavisen.no")
+        print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://bbc.co.uk")
+        print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://startsiden.no")
+        print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://news.com")
+        print "-->language: %s \n" % lang
+        
+    demo = classmethod(demo)
     
-    lang = nb.classifyURL("http://harvardscience.harvard.edu/")
-    print "-->language: %s \n" % lang
-    lang = nb.classifyURL("http://vg.no")
-    print "-->language: %s \n" % lang
-    lang = nb.classifyURL("http://itavisen.no")
-    print "-->language: %s \n" % lang
-    lang = nb.classifyURL("http://bbc.co.uk")
-    print "-->language: %s \n" % lang
-    lang = nb.classifyURL("http://startsiden.no")
-    print "-->language: %s \n" % lang
-    lang = nb.classifyURL("http://news.com")
-    print "-->language: %s \n" % lang
-    raw_input("I'm done. Press ENTER")
+def demo():
+    NaiveBayes.demo()
+    
+if __name__=="__main__":
+    NaiveBayes.demo()    
     
     
