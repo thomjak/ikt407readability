@@ -12,6 +12,7 @@ def getTextVariables(text = ''):
     complexwordsCount = textanalyzer.countComplexWords(text)
     averageWordsPerSentence = wordCount/sentenceCount
     
+    analyzedVariables['words'] = words
     analyzedVariables['charCount'] = float(charCount)
     analyzedVariables['wordCount'] = float(wordCount)
     analyzedVariables['sentenceCount'] = float(sentenceCount)
@@ -60,6 +61,25 @@ def ColemanLiauIndex():
     score = (5.89*(analyzedVariables['charCount']/analyzedVariables['wordCount']))-(30*(analyzedVariables['sentenceCount']/analyzedVariables['wordCount']))-15.8
     return score
 
+def LIX():
+    score = 0.0
+    longwords = 0.0
+    for word in analyzedVariables['words']:
+        if len(word) >= 7:
+            longwords += 1.0
+    score = analyzedVariables['wordCount'] / analyzedVariables['sentenceCount'] + float(100 * longwords) / analyzedVariables['wordCount']
+    return score
+
+def RIX():
+    score = 0.0
+    longwords = 0.0
+    for word in analyzedVariables['words']:
+        if len(word) >= 7:
+            longwords += 1.0
+    score = longwords / analyzedVariables['sentenceCount']
+    return score
+    
+
 def getReportAll():
     ari = 0.0
     fleschEase = 0.0
@@ -74,6 +94,8 @@ def getReportAll():
     gunningFog = GunningFogIndex()
     smog = SMOGIndex()
     coleman = ColemanLiauIndex()
+    lix = LIX()
+    rix = RIX()
     
     print '*' * 70
     print ' ARI: %.1f' % ari
@@ -82,6 +104,8 @@ def getReportAll():
     print ' Gunning Fog: %.1f' % gunningFog
     print ' SMOG Index: %.1f' % smog
     print ' Coleman-Liau Index: %.1f' % coleman
+    print ' LIX : %.1f' % lix
+    print ' RIX : %.1f' % rix
     print '*' * 70
  
  
