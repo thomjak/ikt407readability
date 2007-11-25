@@ -69,6 +69,11 @@ class textanalyzer(object):
     def countSyllables(self, words = []):
         if self.lang == "":
             self.lang = NaiveBayes().classifyText(" " .join(words))
+            
+        if self.lang == "unknown":
+            print "WARNING: Unknown language, using English\n"
+            self.lang = "eng"    
+        
         syllableCount = 0
         syllableCounter = {}
         syllableCounter['eng'] = syllables_en.count
