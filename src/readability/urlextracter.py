@@ -22,6 +22,7 @@ class URLextracter(SGMLParser):
             self.sock.close()
             self.close()
         except IOError:
+            print "Could not connect, or the markup has (too) bad structure"
             raise SGMLParseError
         
     def start_style(self,attr):
@@ -112,9 +113,9 @@ class URLextracter(SGMLParser):
         print 'and sentences must consist of at least'
         print '3 words to not be ignored.'
         
-        print 'Fetching text from www.python.org'
+        print '\nFetching text from www.python.org'
         u = URLextracter()
-        print "=" * 20
+        print "=" * 40
         print u.output()
     demo = classmethod(demo)
 

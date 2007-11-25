@@ -30,7 +30,7 @@ class NaiveBayes():
         for word in stopwords.words('english'):
             self.eng_stopwords[word] = True
             
-        self.load(os.path.join("files","lang_data.pickle"))    # CHANGE THIS
+        self.load(os.path.join("files","lang_data.pickle"))
 
             
     def load(self,picklepath):
@@ -164,7 +164,7 @@ class NaiveBayes():
         
         
         for file in self.test_files:
-            values = file.split("/")
+            values = file.split(os.sep)
             true_lang = values[-2]
 
             f = open(file, "r")    
@@ -239,17 +239,26 @@ class NaiveBayes():
         print "Demo of language classifier"
         print "=" * 40
         nb = NaiveBayes()
-        nb.train("/home/thomas/mined2/")
         nb.load(os.path.join("files","lang_data.pickle"))
-        print "Testing accuracy..."
-        nb.testAccuracy("/home/thomas/mined2")
+        
+        print "Classifying plain text(10 first sentences from \"nltk.corpus.abc.sents\")"
+        print "=" * 40
+        text = ""
+        import nltk.corpus
+        sents = nltk.corpus.abc.sents()
+        for words in sents[0:10]:
+            text+= " ".join(words) + "\n"
+        print text
+        print "=" * 40
+        print "Languages is: %s" % nb.classifyText(text)
+        
         print "\n"
+        print "Classifying 10 URLs"
+        print "=" * 40
         
         lang = nb.classifyURL("http://harvardscience.harvard.edu/")
         print "-->language: %s \n" % lang
         lang = nb.classifyURL("http://vg.no")
-        print "-->language: %s \n" % lang
-        lang = nb.classifyURL("http://itavisen.no")
         print "-->language: %s \n" % lang
         lang = nb.classifyURL("http://bbc.co.uk")
         print "-->language: %s \n" % lang
