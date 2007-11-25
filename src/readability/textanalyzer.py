@@ -3,14 +3,18 @@
 # Sets the encoding to utf-8 to avoid problems with æøå
 import nltk.data
 from nltk.tokenize import *
-import syllables
+import syllables_en
+import syllables_no
+from languageclassifier import *
 
 class textanalyzer(object):
 
     tokenizer = RegexpTokenizer('(?u)\W+|\$[\d\.]+|\S+')
     special_chars = ['.', ',', '!', '?']
+    lang = ""
     
-    def __init__(self):
+    def __init__(self, lang):
+        self.lang = lang
         pass
 
     def analyzeText(self, text=''):
@@ -63,9 +67,14 @@ class textanalyzer(object):
     getSentences = classmethod(getSentences)
     
     def countSyllables(self, words = []):
+        if self.lang == "":
+            self.lang = NaiveBayes().classifyText(" " .join(words))
         syllableCount = 0
+        syllableCounter = {}
+        syllableCounter['eng'] = syllables_en.count
+        syllableCounter['no'] = syllables_no.count
         for word in words:
-            syllableCount += syllables.count_word_fallback(word)
+            syllableCount += syllableCounter[self.lang](word)
             
         return syllableCount
     countSyllables = classmethod(countSyllables)
