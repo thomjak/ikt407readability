@@ -1,10 +1,13 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*- 
+# Sets the encoding to utf-8 to avoid problems with æøå
 import nltk.data
 from nltk.tokenize import *
 import syllables
 
 class textanalyzer(object):
 
-    tokenizer = RegexpTokenizer('\w+|\$[\d\.]+|\S+')
+    tokenizer = RegexpTokenizer('(?u)\W+|\$[\d\.]+|\S+')
     special_chars = ['.', ',', '!', '?']
     
     def __init__(self):
@@ -20,31 +23,37 @@ class textanalyzer(object):
         complexwordsCount = self.countComplexWords(text)
         averageWordsPerSentence = wordCount/sentenceCount
         
-        print '*' * 70
         print ' Number of characters: ' + str(charCount)
         print ' Number of words: ' + str(wordCount)
         print ' Number of sentences: ' + str(sentenceCount)
         print ' Number of syllables: ' + str(syllablesCount)
         print ' Number of complex words: ' + str(complexwordsCount)
         print ' Average words per sentence: ' + str(averageWordsPerSentence)
-        print '*' * 70
     analyzeText = classmethod(analyzeText)  
         
 
     def getCharacterCount(self, words):
         characters = 0
         for word in words:
-            characters += len(word)
+            word = self._setEncoding(word)
+            l = len(word.decode("utf-8"))
+            characters += len(word.decode("utf-8"))
         return characters
     getCharacterCount = classmethod(getCharacterCount)    
         
     def getWords(self, text=''):
+        text = self._setEncoding(text)
         words = []
         words = self.tokenizer.tokenize(text)
+        filtered_words = []
         for word in words:
-            if word in self.special_chars:
-                words.remove(word)
-        return words
+            if word in self.special_chars or word == " ":
+                pass
+            else:
+                new_word = word.replace(",","").replace(".","")
+                new_word = new_word.replace("!","").replace("?","")
+                filtered_words.append(new_word)
+        return filtered_words
     getWords = classmethod(getWords)
     
     def getSentences(self, text=''):
@@ -99,6 +108,17 @@ class textanalyzer(object):
             curWord.remove(word)
         return complexWords
     countComplexWords = classmethod(countComplexWords)
+    
+    def _setEncoding(self,text):
+        try:
+            text = unicode(text, "utf8").encode("utf8")
+        except UnicodeError:
+            try:
+                text = unicode(text, "iso8859_1").encode("utf8")
+            except UnicodeError:
+                text = unicode(text, "ascii", "replace").encode("utf8")
+        return text
+    _setEncoding = classmethod(_setEncoding)
         
         
     def demo(self):

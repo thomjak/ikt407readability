@@ -30,7 +30,7 @@ class NaiveBayes():
         for word in stopwords.words('english'):
             self.eng_stopwords[word] = True
             
-        self.load("/home/thomas/test.pickle")    # CHANGE THIS
+        self.load(os.path.abspath("files/lang_data.pickle"))    # CHANGE THIS
 
             
     def load(self,picklepath):
@@ -105,7 +105,7 @@ class NaiveBayes():
         self.candidate_languages = self.files.keys()
         
         # Save result as a file
-        output = open("/home/thomas/test.pickle",'w')
+        output = open(os.path.abspath("files/lang_data.pickle"),'w')
         data = {}
         data["p_word_given_lang"] = p_word_given_lang
         data["canidate_languages"] = self.files.keys()
@@ -147,11 +147,10 @@ class NaiveBayes():
             print "No test files given"
             return
         elif os.path.isdir(str(test_files)):
-            print "path"
             self.test_files = glob.glob(test_files + "/*/*")
+            random.shuffle(self.test_files)
         else:
             self.test_files = test_files
-            print "dict"
             
             
             
@@ -200,13 +199,25 @@ class NaiveBayes():
         for candidate_lang in self.candidate_languages:
             # Calculates P(O | H) * P(H) for candidate group
             p = math.log(self.p_lang[candidate_lang])
-            for word in text.split(' '):
+            words = text.split(' ')
+            unknown_words = []
+            known_words = []
+            for word in words:
                 if self.vocabulary[candidate_lang].has_key(word):
                     p += math.log(self.p_word_given_lang[candidate_lang][word])
-    
+                    if word not in known_words:
+                        known_words.append(word)
+                else:
+                    if word not in unknown_words:
+                        unknown_words.append(word)
             if p > max_p or max_p == 1:
                 max_p = p
                 max_lang = candidate_lang
+        
+        percent = (float(len(known_words)) / float(len(unknown_words)))
+        # return unknown if less than 25% of the words are known
+        if percent <= 0.25:        
+            max_lang = "unknown"
         
         return max_lang
     
@@ -230,6 +241,7 @@ class NaiveBayes():
         nb = NaiveBayes()
         #nb.train("/home/thomas/mined2/")
         nb.load("/home/thomas/test.pickle")
+        print "Testing accuracy..."
         nb.testAccuracy("/home/thomas/mined2")
         print "\n"
         
@@ -245,6 +257,23 @@ class NaiveBayes():
         print "-->language: %s \n" % lang
         lang = nb.classifyURL("http://news.com")
         print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://www.munimadrid.es")
+        print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://www.welt.de/")
+        print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://www.news.pl/")
+        print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://www.ekstrabladet.dk/")
+        print "-->language: %s \n" % lang
+        lang = nb.classifyURL("http://www.gazzetta.it/")
+        print "-->language: %s \n" % lang
+        
+        
+        
+        
+        
+        
+        
         
     demo = classmethod(demo)
     

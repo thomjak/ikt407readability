@@ -54,7 +54,8 @@ class URLextracter(SGMLParser):
         SGMLParser.reset(self)
         
     def handle_data(self, text):
-        tags_to_skip = [self.style, self.script, self.hyperlink]
+        #tags_to_skip = [self.style, self.script, self.hyperlink]
+        tags_to_skip = [self.style, self.script]
         if True in tags_to_skip:
             pass
         else: 
@@ -80,7 +81,7 @@ class URLextracter(SGMLParser):
         # Clean up text and return it
         content = "" . join(self.pieces)
         content = self._setEncoding(content)
-        content = re.sub(r"[^a-zA-ZæøåÆØÅ.?!]", " ", content)
+        content = re.sub(r"[^0-9a-zA-ZæøåÆØÅ.?!\n\r]", " ", content)
         content = content.strip()
         #lines = content.replace("\t", " ").replace("\r","\n").splitlines()
         lines = content.splitlines()
@@ -92,7 +93,7 @@ class URLextracter(SGMLParser):
             else:    
                 if len(temp.split(" ")) > 2:
                     content += line + "\n"
-        return str(content)
+        return content
         
         
     def _setEncoding(self,text):
@@ -104,3 +105,21 @@ class URLextracter(SGMLParser):
             except UnicodeError:
                 text = unicode(text, "ascii", "replace").encode("utf8")
         return text
+    
+    def demo(self):
+        print 'This class takes an URL, and extracts the text it contains.'
+        print 'It also removes special characters and numbers,'
+        print 'and sentences must consist of at least'
+        print '3 words to not be ignored.'
+        
+        print 'Fetching text from www.python.org'
+        u = URLextracter()
+        print "=" * 20
+        print u.output()
+    demo = classmethod(demo)
+
+def demo():
+    URLextracter.demo()
+
+if __name__ == "__main__":
+    URLextracter.demo()
