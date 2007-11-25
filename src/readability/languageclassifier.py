@@ -35,7 +35,7 @@ class NaiveBayes():
             
     def load(self,picklepath):
         try:
-            p = open(picklepath, 'r')
+            p = open(picklepath, 'rb')
             data = pickle.load(p)
             self.p_word_given_lang = data["p_word_given_lang"]
             self.candidate_languages = data["canidate_languages"]
@@ -105,7 +105,7 @@ class NaiveBayes():
         self.candidate_languages = self.files.keys()
         
         # Save result as a file
-        output = open(os.path.join("files","lang_data.pickle"),'w')
+        output = open(os.path.join("files","lang_data.pickle"),'wb')
         data = {}
         data["p_word_given_lang"] = p_word_given_lang
         data["canidate_languages"] = self.files.keys()
