@@ -30,7 +30,7 @@ class NaiveBayes():
         for word in stopwords.words('english'):
             self.eng_stopwords[word] = True
             
-        self.load(os.path.abspath("files/lang_data.pickle"))    # CHANGE THIS
+        self.load(os.path.join("files","lang_data.pickle"))    # CHANGE THIS
 
             
     def load(self,picklepath):
@@ -105,7 +105,7 @@ class NaiveBayes():
         self.candidate_languages = self.files.keys()
         
         # Save result as a file
-        output = open(os.path.abspath("files/lang_data.pickle"),'w')
+        output = open(os.path.join("files","lang_data.pickle"),'w')
         data = {}
         data["p_word_given_lang"] = p_word_given_lang
         data["canidate_languages"] = self.files.keys()
@@ -239,8 +239,8 @@ class NaiveBayes():
         print "Demo of language classifier"
         print "=" * 40
         nb = NaiveBayes()
-        #nb.train("/home/thomas/mined2/")
-        nb.load("/home/thomas/test.pickle")
+        nb.train("/home/thomas/mined2/")
+        nb.load(os.path.join("files","lang_data.pickle"))
         print "Testing accuracy..."
         nb.testAccuracy("/home/thomas/mined2")
         print "\n"
