@@ -36,7 +36,6 @@ class textanalyzer(object):
         characters = 0
         for word in words:
             word = self._setEncoding(word)
-            l = len(word.decode("utf-8"))
             characters += len(word.decode("utf-8"))
         return characters
     getCharacterCount = classmethod(getCharacterCount)    
@@ -122,21 +121,22 @@ class textanalyzer(object):
         
         
     def demo(self):
-        text = """
-                It is for us the living, rather,
-                to be dedicated here to the unfinished
-                work which they who fought here have
-                thus far so nobly advanced. It is
-                rather for us to be here dedicated
-                to the great task remaining before us,
-                that from these honored dead we take 
-                increased devotion to that cause for which they
-                gave the last full measure of devotion, that we
-                here highly resolve that these dead shall not have
-                died in vain, that this nation, under God, shall have a
-                new birth of freedom, and that government of the people, by
-                the people, for the people, shall not perish from this earth.  
-               """
+        text = "It is for us the living, rather,\
+                \nto be dedicated here to the unfinished\
+                \nwork which they who fought here have\
+                \nthus far so nobly advanced. It is\
+                \nrather for us to be here dedicated\
+                \nto the great task remaining before us,\
+                \nthat from these honored dead we take\
+                \nincreased devotion to that cause for which they\
+                \ngave the last full measure of devotion, that we\
+                \nhere highly resolve that these dead shall not have\
+                \ndied in vain, that this nation, under God, shall have a\
+                \nnew birth of freedom, and that government of the people, by\
+                \nthe people, for the people, shall not perish from this earth."
+        print "The text : \n" + ("=" * 40)
+        print text
+        print ("=" * 40) + "\nHas the following statistics\n" + ("=" * 40)
         textanalyzer.analyzeText(text)
         pass
     demo = classmethod(demo)
