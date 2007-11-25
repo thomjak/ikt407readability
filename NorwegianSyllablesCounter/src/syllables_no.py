@@ -10,7 +10,7 @@ syllable_path = os.path.join("files", "specialSyllables_no")
 syllablesInFile = {}
 
 #The last 7, starting at "ai", are the Norwegian diphthongs.
-subSyllableIf = ["ai","au","ei","oy","oi","ui","øy"]
+subSyllableIf = ["ai","au","oy","oi","ui","øy"]
 for item in subSyllableIf:
     item = item.decode("utf-8")
 #Tok bort "en$" og "et$"; må forskes mer på.
@@ -18,7 +18,7 @@ for item in subSyllableIf:
 
 #Syllables who are not counted as one, but should be.
 #Between two vowels that do not form a diphthong.
-addSyllableIf = ["oa", "io", "eo", "ia"]
+addSyllableIf = ["oa", "io", "eo", "ia", "ee", "ie"]
 for item in addSyllableIf:
     item = item.decode("utf-8")
 

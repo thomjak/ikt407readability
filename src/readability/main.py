@@ -8,10 +8,11 @@ from readabilitytests import *
 
 def getinfo(text):
     lnb = NaiveBayes()
-    ta = textanalyzer()
-    rt = ReadabilityTool()
-    
+   
     lang = lnb.classifyText(text)
+    
+    ta = textanalyzer(lang)
+    rt = ReadabilityTool()
     
     print "The language of the text is determined to be:\t%s\n" % lang
     
@@ -29,5 +30,5 @@ def getinfo(text):
 
 
     
-getinfo("Howard har vært statsminister i 11 og et halvt år og har vært populær blant folket, noe fire valgseire understreker. Denne gangen risikerer han derimot å miste sitt eget sete i nasjonalforsamlingen etter et katastrofalt dårlig valg, som ga Labour-partiet en seiersmargin på 6,3 prosent.")
+getinfo("Howard har vært statsminister i 11 og et halvt år og har vært populær blant folket, noe fire valgseire understreker. Denne gangen risikerer han derimot å miste sitt eget sete i nasjonalforsamlingen etter et katastrofalt dårlig valg, som ga Labour partiet en seiersmargin på 6,3 prosent.")
     
