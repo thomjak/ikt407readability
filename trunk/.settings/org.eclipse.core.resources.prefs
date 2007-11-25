@@ -1,10 +1,12 @@
-#Sun Nov 25 21:21:02 CET 2007
+#Sun Nov 25 22:07:26 CET 2007
 eclipse.preferences.version=1
+encoding//NorwegianSyllablesCounter/src/syllables_no.py=UTF-8
 encoding//NorwegianSyllablesCounter/src/test.py=UTF-8
 encoding//NorwegianSyllablesCounter/src/textanalyzer.py=UTF-8
 encoding//src/readability/files/specialSyllables_no=ISO-8859-1
 encoding//src/readability/jakobsen.py=UTF-8
 encoding//src/readability/languageclassifier.py=UTF-8
+encoding//src/readability/main.py=UTF-8
 encoding//src/readability/skardal.py=UTF-8
 encoding//src/readability/syllables_no.py=UTF-8
 encoding//src/readability/textanalyzer.py=UTF-8

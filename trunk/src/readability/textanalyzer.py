@@ -103,11 +103,11 @@ class textanalyzer(object):
             if self.countSyllables(curWord)>= 3:
                 
                 #Checking proper nouns. If a word starts with a capital letter
-                #and is NOT  at the beginning of a sentence we don't add it
+                #and is NOT at the beginning of a sentence we don't add it
                 #as a complex word.
                 if not(word[0].isupper()):
                     complexWords += 1
-                    #cWords.append(word)
+                    cWords.append(word)
                 else:
                     for sentence in sentencesList:
                         if str(sentence).startswith(word):
@@ -119,6 +119,7 @@ class textanalyzer(object):
                         found = False
                     
             curWord.remove(word)
+        print cWords
         return complexWords
     countComplexWords = classmethod(countComplexWords)
     
