@@ -1,20 +1,26 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*- 
 # Sets the encoding to utf-8 to avoid problems with æøå
-import string, re
+import string
+import re
+import os.path
 
-syllable_path = "files/stavelser"
+syllable_path = os.path.join("files", "stavelser")
 
 syllablesInFile = {}
 
 #The last 7, starting at "ai", are the Norwegian diphthongs.
 subSyllableIf = ["ges", "ai","au","ei","oy","oi","ui","øy"]
+for item in subSyllableIf:
+    item = item.decode("utf-8")
 #Tok bort "en$" og "et$"; må forskes mer på.
 
 
 #Syllables who are not counted as one, but should be.
 #Between two vowels that do not form a diphthong.
 addSyllableIf = ["oa", "io", "eo", "ia"]
+for item in addSyllableIf:
+    item = item.decode("utf-8")
 
 # Compile the regular expressions in aubSyllableIf
 for i in range(len(subSyllableIf)):
@@ -32,11 +38,12 @@ for line in in_syll.xreadlines():
     if line:
         toks = line.split()
         assert len(toks) == 2
-        syllablesInFile[_stripWord(toks[0])] = int(toks[1])
+        syllablesInFile[_stripWord(unicode(toks[0],"latin-1").encode("utf-8"))] = int(toks[1])
 in_syll.close()
 
 def countNorwegianSyllables(word):
 
+    word = unicode(word,"utf-8").encode("utf-8")
     word = _stripWord(word)
 
     if not word:
@@ -51,8 +58,11 @@ def countNorwegianSyllables(word):
     # Count vowel groups
     count = 0
     prev_was_vowel = 0
-    for c in word:
-        is_vowel = c in ("a", "e", "i", "o", "u", "y", "æ", "ø", "å")
+    vowels = [u"a", u"e", u"i", u"o", u"u", u"y", u"æ", u"ø", u"å"]
+    #for vow in vowels:
+        #vow = vow.decode("utf-8")
+    for c in word.decode("utf-8"):
+        is_vowel = c in vowels
         if is_vowel and not prev_was_vowel:
             count += 1
         prev_was_vowel = is_vowel
@@ -69,8 +79,9 @@ def countNorwegianSyllables(word):
     syllablesInFile[word] = count
     
     #Add syllable to file
-    file = open(syllable_path, "a")
-    file.write(word + " " + str(count) + "\n")
-    file.close()
+    if count > 0:
+        file = open(syllable_path, "a")
+        file.write( unicode(word,"utf-8").encode("latin-1") + " " + str(count) + "\n")
+        file.close()
 
     return count
