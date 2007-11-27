@@ -14,12 +14,15 @@ class ReadabilityTool:
         if text != '':
             if text != self.text:
                 self.text = text
-                words = textanalyzer.getWords(text)
-                charCount = textanalyzer.getCharacterCount(words)
+                lang = NaiveBayes().classifyText(text)
+                t = textanalyzer(lang)
+                t.analyzeText(text)
+                words = t.getWords(text)
+                charCount = t.getCharacterCount(words)
                 wordCount = len(words)
-                sentenceCount = len(textanalyzer.getSentences(text))
-                syllableCount = textanalyzer.countSyllables(words)
-                complexwordsCount = textanalyzer.countComplexWords(text)
+                sentenceCount = len(t.getSentences(text))
+                syllableCount = t.countSyllables(words)
+                complexwordsCount = t.countComplexWords(text)
                 averageWordsPerSentence = wordCount/sentenceCount
                 
                 analyzedVars = {}
@@ -33,10 +36,6 @@ class ReadabilityTool:
                 analyzedVars['averageWordsPerSentence'] = float(averageWordsPerSentence)
                 self.analyzedVars = analyzedVars
         
-        
-    def CalculateAllTests(self, text = ''):
-        self.__analyzeText(text)
-        getReportAll()
      
     
     def ARI(self, text = ''):

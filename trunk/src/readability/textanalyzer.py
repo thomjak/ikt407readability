@@ -11,14 +11,15 @@ class textanalyzer(object):
 
     tokenizer = RegexpTokenizer('(?u)\W+|\$[\d\.]+|\S+')
     special_chars = ['.', ',', '!', '?']
-    lang = ""
+    lang = "eng"
     
     def __init__(self, lang):
         self.lang = lang
-        pass
+    
+    def setLang(self,lang):
+        self.lang = lang
 
     def analyzeText(self, text=''):
-        
         words = self.getWords(text)
         charCount = self.getCharacterCount(words)
         wordCount = len(words)
@@ -26,14 +27,14 @@ class textanalyzer(object):
         syllablesCount = self.countSyllables(words)
         complexwordsCount = self.countComplexWords(text)
         averageWordsPerSentence = wordCount/sentenceCount
-        
+        print ' Language: ' + self.lang
         print ' Number of characters: ' + str(charCount)
         print ' Number of words: ' + str(wordCount)
         print ' Number of sentences: ' + str(sentenceCount)
         print ' Number of syllables: ' + str(syllablesCount)
         print ' Number of complex words: ' + str(complexwordsCount)
         print ' Average words per sentence: ' + str(averageWordsPerSentence)
-    analyzeText = classmethod(analyzeText)  
+    #analyzeText = classmethod(analyzeText)  
         
 
     def getCharacterCount(self, words):
@@ -42,7 +43,7 @@ class textanalyzer(object):
             word = self._setEncoding(word)
             characters += len(word.decode("utf-8"))
         return characters
-    getCharacterCount = classmethod(getCharacterCount)    
+    #getCharacterCount = classmethod(getCharacterCount)    
         
     def getWords(self, text=''):
         text = self._setEncoding(text)
@@ -57,18 +58,18 @@ class textanalyzer(object):
                 new_word = new_word.replace("!","").replace("?","")
                 filtered_words.append(new_word)
         return filtered_words
-    getWords = classmethod(getWords)
+    #getWords = classmethod(getWords)
     
     def getSentences(self, text=''):
         sentences = []
         tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
         sentences = tokenizer.tokenize(text)
         return sentences
-    getSentences = classmethod(getSentences)
+    #getSentences = classmethod(getSentences)
     
     def countSyllables(self, words = []):
-        if self.lang == "":
-            self.lang = NaiveBayes().classifyText(" " .join(words))
+#        if self.lang == "":
+#            self.lang = NaiveBayes().classifyText(" " .join(words))
             
         if self.lang == "unknown":
             print "WARNING: Unknown language, using English\n"
@@ -82,7 +83,7 @@ class textanalyzer(object):
             syllableCount += syllableCounter[self.lang](word)
             
         return syllableCount
-    countSyllables = classmethod(countSyllables)
+    #countSyllables = classmethod(countSyllables)
     
     
     #This method must be enhanced. At the moment it only
@@ -107,7 +108,7 @@ class textanalyzer(object):
                 #as a complex word.
                 if not(word[0].isupper()):
                     complexWords += 1
-                    cWords.append(word)
+                    #cWords.append(word)
                 else:
                     for sentence in sentencesList:
                         if str(sentence).startswith(word):
@@ -119,9 +120,9 @@ class textanalyzer(object):
                         found = False
                     
             curWord.remove(word)
-        print cWords
+        #print cWords
         return complexWords
-    countComplexWords = classmethod(countComplexWords)
+    #countComplexWords = classmethod(countComplexWords)
     
     def _setEncoding(self,text):
         try:
@@ -132,7 +133,7 @@ class textanalyzer(object):
             except UnicodeError:
                 text = unicode(text, "ascii", "replace").encode("utf8")
         return text
-    _setEncoding = classmethod(_setEncoding)
+    #_setEncoding = classmethod(_setEncoding)
         
         
     def demo(self):
