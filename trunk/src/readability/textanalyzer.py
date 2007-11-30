@@ -27,7 +27,9 @@ class textanalyzer(object):
         syllablesCount = self.countSyllables(words)
         complexwordsCount = self.countComplexWords(text)
         averageWordsPerSentence = wordCount/sentenceCount
+        
         print ' Language: ' + self.lang
+        print '=' * 40
         print ' Number of characters: ' + str(charCount)
         print ' Number of words: ' + str(wordCount)
         print ' Number of sentences: ' + str(sentenceCount)
