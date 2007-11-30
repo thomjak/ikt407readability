@@ -155,7 +155,9 @@ class textanalyzer(object):
         print "The text : \n" + ("=" * 40)
         print text
         print ("=" * 40) + "\nHas the following statistics\n" + ("=" * 40)
-        textanalyzer.analyzeText(text)
+        nb = NaiveBayes()
+        ta = textanalyzer(nb.classifyText(text))
+        ta.analyzeText(text)
         pass
     demo = classmethod(demo)
     

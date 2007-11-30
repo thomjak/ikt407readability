@@ -32,7 +32,11 @@ class NaiveBayes():
             
         self.load(os.path.join("files","lang_data.pickle"))
 
-            
+     
+    """
+    load pickled training results
+    picklepath is the local path to your picklefile
+    """        
     def load(self,picklepath):
         try:
             p = open(picklepath, 'rb')
@@ -57,7 +61,7 @@ class NaiveBayes():
         random.shuffle(data_files)
         
         self.training_files = data_files[0:300]
-        self.test_files = data_files[300:400]
+        self.test_files = data_files[300:]
         
         self.files = {}
         self.p_lang = {}
@@ -141,6 +145,12 @@ class NaiveBayes():
                         vocabulary['eng'][word] = True
         return vocabulary
     
+    
+    """
+    Test the accuracy of the classifier.
+    Provide test files as list or path.
+    The path must be on the same form as when training.
+    """
     def testAccuracy(self,test_files = ""):
         
         if test_files == "":
@@ -151,10 +161,7 @@ class NaiveBayes():
             random.shuffle(self.test_files)
         else:
             self.test_files = test_files
-            
-            
-            
-        
+  
         errors = 0.0
         total = 0.0
         
@@ -215,7 +222,7 @@ class NaiveBayes():
                 max_lang = candidate_lang
         
         percent = (float(len(known_words)) / float(len(unknown_words)))
-        # return unknown if less than 25% of the words are known
+        # return unknown if the ratio of known words is less or equal to 0.25
         if percent <= 0.25:        
             max_lang = "unknown"
         
@@ -275,15 +282,7 @@ class NaiveBayes():
         lang = nb.classifyURL("http://www.ekstrabladet.dk/")
         print "-->language: %s \n" % lang
         lang = nb.classifyURL("http://www.gazzetta.it/")
-        print "-->language: %s \n" % lang
-        
-        
-        
-        
-        
-        
-        
-        
+        print "-->language: %s \n" % lang      
     demo = classmethod(demo)
     
 def demo():
