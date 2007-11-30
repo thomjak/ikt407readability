@@ -34,27 +34,13 @@ class Crawler:
         print "Stored as: " + filename
         urls = ""
         try:
-            f = open("/home/thomas/mined2/no/%s" % filename, 'wb')
+            # Set the path of where to store your data
+            f = open("/path/to/saved/data/lang/%s" % filename, 'wb')
             content = str(ue.output())         
-            #content = re.sub(r"\W+", " ", content)
-            #content = re.sub(r"[0-9]", " ", content)
             content = re.sub(r"[^a-zA-ZæøåÆØÅ]", " ", content)
             content = content.strip()
-#            for c in self.special_chars:    # Remove special characters
-#                content.replace(str(c), " ")
-#                print content
-#                raw_input("enter")
-            
-#            lines = content.replace("\t", " ").replace("\r"," ").splitlines()
-#            content = []
-#            for line in lines:
-#                temp = line.strip()
-#                if temp == "" or temp == " ":
-#                    lines.remove(line)
-#                else:
-#                    if len(line.strip().split(" ")) > 5:        # Minimum 5 words
-#                        content.append(line.strip() + "\n")
-            if len(content) > 5:
+
+            if len(content) > 2:    # Minimum 3 words
                 try:
                     textToWrite = unicode("".join(content))
                 except UnicodeDecodeError:
@@ -62,7 +48,8 @@ class Crawler:
                 f.write(textToWrite)
                 f.close()
             else:
-                os.remove("/home/thomas/mined2/no/%s" % filename)
+                # Set this path to same as storage path
+                os.remove("/path/to/saved/data/lang/%s" % filename)
             urls = ue.linklist
             print "" + url + " mined!"
         except IOError:
@@ -115,6 +102,6 @@ class Crawler:
 
 
 if __name__=="__main__":
-    url = "http://www.vg.no"
+    url = "http://www.vg.no"    # start url (should be a large known site)
     c = Crawler()
     c.crawl(url)
