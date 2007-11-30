@@ -121,7 +121,7 @@ class ReadabilityTool:
         lix = self.LIX()
         rix = self.RIX()
         
-        print '*' * 70
+        print '=' * 40
         print ' ARI: %.1f' % ari
         print ' Flesch Reading Ease: %.1f' % fleschEase
         print ' FleschKincaid Grade Level: %.1f' % fleschGrade
@@ -130,7 +130,7 @@ class ReadabilityTool:
         print ' Coleman-Liau Index: %.1f' % coleman
         print ' LIX : %.1f' % lix
         print ' RIX : %.1f' % rix
-        print '*' * 70
+        print '=' * 40
  
     def demo(self):
         self = ReadabilityTool()
