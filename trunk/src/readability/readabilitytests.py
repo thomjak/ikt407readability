@@ -5,8 +5,37 @@ class ReadabilityTool:
 
     analyzedVars = {}
     text = ""
+    lang = ""
+    
+    tests_given_lang = {}
 
     def __init__(self, text = ''):
+        self.tests_given_lang['all'] = {}
+        self.tests_given_lang['all']["ARI"] = self.ARI
+        self.tests_given_lang['all']['Flesch Reading Ease'] = self.FleschReadingEase
+        self.tests_given_lang['all']["Flesch-Kincaid Grade Level"] = self.FleschKincaidGradeLevel
+        self.tests_given_lang['all']["Gunning Fog Index"] = self.GunningFogIndex
+        self.tests_given_lang['all']["SMOG Index"] = self.SMOGIndex
+        self.tests_given_lang['all']['Coleman Liau Index'] = self.ColemanLiauIndex
+        self.tests_given_lang['all']['LIX'] = self.LIX
+        self.tests_given_lang['all']['RIX'] = self.RIX
+        
+        self.tests_given_lang['eng'] = {}
+        self.tests_given_lang['eng']["ARI"] = self.ARI
+        self.tests_given_lang['eng']['Flesch Reading Ease'] = self.FleschReadingEase
+        self.tests_given_lang['eng']["Flesch-Kincaid Grade Level"] = self.FleschKincaidGradeLevel
+        self.tests_given_lang['eng']["Gunning Fog Index"] = self.GunningFogIndex
+        self.tests_given_lang['eng']["SMOG Index"] = self.SMOGIndex
+        self.tests_given_lang['eng']['Coleman Liau Index'] = self.ColemanLiauIndex
+        self.tests_given_lang['eng']['LIX'] = self.LIX
+        self.tests_given_lang['eng']['RIX'] = self.RIX
+        
+        self.tests_given_lang['no'] = {}
+        self.tests_given_lang['no']["ARI"] = self.ARI
+        self.tests_given_lang['no']['Coleman Liau Index'] = self.ColemanLiauIndex
+        self.tests_given_lang['no']['LIX'] = self.LIX
+        self.tests_given_lang['no']['RIX'] = self.RIX
+        
         if text != '':
             self.__analyzeText(text)
                 
@@ -15,6 +44,7 @@ class ReadabilityTool:
             if text != self.text:
                 self.text = text
                 lang = NaiveBayes().classifyText(text)
+                self.lang = lang
                 t = textanalyzer(lang)
                 t.analyzeText(text)
                 words = t.getWords(text)
@@ -105,32 +135,45 @@ class ReadabilityTool:
     
     def getReportAll(self, text = ''):
         self.__analyzeText(text)
-        ari = 0.0
-        fleschEase = 0.0
-        fleschGrade = 0.0
-        gunningFog = 0.0
-        smog = 0.0
-        coleman = 0.0
+#        ari = 0.0
+#        fleschEase = 0.0
+#        fleschGrade = 0.0
+#        gunningFog = 0.0
+#        smog = 0.0
+#        coleman = 0.0
+#        
+#        ari = self.ARI()
+#        fleschEase = self.FleschReadingEase()
+#        fleschGrade = self.FleschKincaidGradeLevel()
+#        gunningFog = self.GunningFogIndex()
+#        smog = self.SMOGIndex()
+#        coleman = self.ColemanLiauIndex()
+#        lix = self.LIX()
+#        rix = self.RIX()
+#        
+#        print '*' * 70
+#        print ' ARI: %.1f' % ari
+#        print ' Flesch Reading Ease: %.1f' % fleschEase
+#        print ' FleschKincaid Grade Level: %.1f' % fleschGrade
+#        print ' Gunning Fog: %.1f' % gunningFog
+#        print ' SMOG Index: %.1f' % smog
+#        print ' Coleman-Liau Index: %.1f' % coleman
+#        print ' LIX : %.1f' % lix
+#        print ' RIX : %.1f' % rix
+#        print '*' * 70
         
-        ari = self.ARI()
-        fleschEase = self.FleschReadingEase()
-        fleschGrade = self.FleschKincaidGradeLevel()
-        gunningFog = self.GunningFogIndex()
-        smog = self.SMOGIndex()
-        coleman = self.ColemanLiauIndex()
-        lix = self.LIX()
-        rix = self.RIX()
-        
-        print '=' * 40
-        print ' ARI: %.1f' % ari
-        print ' Flesch Reading Ease: %.1f' % fleschEase
-        print ' FleschKincaid Grade Level: %.1f' % fleschGrade
-        print ' Gunning Fog: %.1f' % gunningFog
-        print ' SMOG Index: %.1f' % smog
-        print ' Coleman-Liau Index: %.1f' % coleman
-        print ' LIX : %.1f' % lix
-        print ' RIX : %.1f' % rix
-        print '=' * 40
+        print "=" * 100
+        print "Recommended tests for lang: %s" % self.lang 
+        print "=" * 100
+        for testname in self.tests_given_lang[self.lang].keys():
+            print testname + " : %2.f" % self.tests_given_lang[self.lang][testname](text)
+        print "=" * 100
+        print "Other tests: (Warning! Use with care)"
+        print "=" * 100 
+        for testname in self.tests_given_lang["all"].keys():
+            if not self.tests_given_lang[self.lang].has_key(testname):
+                print testname + " : %2.f" % self.tests_given_lang["all"][testname](text) 
+            
  
     def demo(self):
         self = ReadabilityTool()
